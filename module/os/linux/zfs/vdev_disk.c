@@ -773,8 +773,9 @@ vbio_fill_cb(struct page *page, size_t off, size_t len, void *priv)
 
 /* Create some BIOs, fill them with data and submit them */
 static void
-vbio_submit(vbio_t *vbio, abd_t *abd, uint64_t size)
+vbio_submit(vbio_t *vbio, abd_t *abd, uint64_t size, vdev_t *v)
 {
+	zfs_dbgmsg("VBIO SUBMIT CALLED");
 	/*
 	 * We plug so we can submit the BIOs as we go and only unplug them when
 	 * they are fully created and submitted. This is important; if we don't
@@ -796,8 +797,17 @@ vbio_submit(vbio_t *vbio, abd_t *abd, uint64_t size)
 	 * consider it invalid from this point.
 	 */
 
+	atomic_inc_64(&v->vdev_stat.vs_active_io);
+	zfs_dbgmsg("vbio_submit() increment: vs_active_io=%llu", (u_longlong_t)v->vdev_stat.vs_active_io);
+
+	
+
 	if (vbio->vbio_wait) {
 		vdev_submit_bio_wait(vbio->vbio_bio);
+		atomic_dec_64(&v->vdev_stat.vs_active_io);
+		zfs_dbgmsg("vbio_submit() decrement: vs_active_io=%llu", (u_longlong_t)v->vdev_stat.vs_active_io);
+
+
 	} else {
 		vbio->vbio_bio->bi_end_io = vbio_completion;
 		vbio->vbio_bio->bi_private = vbio;
@@ -839,6 +849,9 @@ vbio_completion(struct bio *bio)
 		zio_execute(zio);
 	else
 		zio_delay_interrupt(zio);
+
+    atomic_dec_64(&zio->io_vd->vdev_stat.vs_active_io);
+	zfs_dbgmsg("vbio_completion() decrement async: vs_active_io=%llu", (u_longlong_t)zio->io_vd->vdev_stat.vs_active_io);
 
 }
 
@@ -1003,7 +1016,7 @@ vdev_disk_io_rw(zio_t *zio)
 		vbio->vbio_wait = bio_wait = B_TRUE;
 	}
 	/* Fill it with data pages and submit it to the kernel */
-	vbio_submit(vbio, abd, zio->io_size);
+	vbio_submit(vbio, abd, zio->io_size, v);
 
 	if (bio_wait) {
 		vbio->vbio_bio->bi_private = vbio;
@@ -1161,6 +1174,7 @@ vdev_disk_io_trim(zio_t *zio)
 static void
 vdev_disk_io_start(zio_t *zio)
 {
+	printk(KERN_ERR "VDEV DISK IO START CALLED\n");
 	vdev_t *v = zio->io_vd;
 	vdev_disk_t *vd = v->vdev_tsd;
 	int error;

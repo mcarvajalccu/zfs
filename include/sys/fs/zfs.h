@@ -1441,6 +1441,7 @@ typedef struct vdev_stat {
 	uint64_t	vs_noalloc;		/* allocations halted?	*/
 	uint64_t	vs_pspace;		/* physical capacity */
 	uint64_t	vs_dio_verify_errors;	/* DIO write verify errors */
+	uint64_t    vs_active_io;
 } vdev_stat_t;
 
 #define	VDEV_STAT_VALID(field, uint64_t_field_count) \
