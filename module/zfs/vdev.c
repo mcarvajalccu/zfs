@@ -919,6 +919,9 @@ vdev_alloc(spa_t *spa, vdev_t **vdp, nvlist_t *nv, vdev_t *parent, uint_t id,
 	vd->vdev_tsd = tsd;
 	vd->vdev_islog = islog;
 
+	mutex_init(&vd->vdev_io_counter_lock, NULL, MUTEX_DEFAULT, NULL);
+    vd->vdev_stat.vs_active_io = 0;
+
 	if (top_level && alloc_bias != VDEV_BIAS_NONE)
 		vd->vdev_alloc_bias = alloc_bias;
 
@@ -1284,6 +1287,8 @@ vdev_free(vdev_t *vd)
 
 	mutex_destroy(&vd->vdev_rebuild_lock);
 	cv_destroy(&vd->vdev_rebuild_cv);
+
+	mutex_destroy(&vd->vdev_io_counter_lock);
 
 	zfs_ratelimit_fini(&vd->vdev_delay_rl);
 	zfs_ratelimit_fini(&vd->vdev_deadman_rl);
