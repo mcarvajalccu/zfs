@@ -4838,6 +4838,10 @@ zio_vdev_io_start(zio_t *zio)
 			return (NULL);
 		}
 	}
+	
+	mutex_enter(&vd->vdev_io_counter_lock);
+	vd->vdev_stat.vs_active_io++
+	mutex_exit(&vd->vdev_io_counter_lock);
 
 	vd->vdev_ops->vdev_op_io_start(zio);
 	return (NULL);
@@ -4882,6 +4886,11 @@ zio_vdev_io_done(zio_t *zio)
 				unexpected_error = B_TRUE;
 			}
 		}
+
+		mutex_enter(&vd->vdev_io_counter_lock);
+		vd->vdev_stat.vs_active_io--
+		mutex_exit(&vd->vdev_io_counter_lock);
+
 	}
 
 	ops->vdev_op_io_done(zio);
