@@ -1287,8 +1287,6 @@ vdev_free(vdev_t *vd)
 	mutex_destroy(&vd->vdev_rebuild_lock);
 	cv_destroy(&vd->vdev_rebuild_cv);
 
-	mutex_destroy(&vd->vdev_io_counter_lock);
-
 	zfs_ratelimit_fini(&vd->vdev_delay_rl);
 	zfs_ratelimit_fini(&vd->vdev_deadman_rl);
 	zfs_ratelimit_fini(&vd->vdev_dio_verify_rl);
