@@ -919,8 +919,6 @@ vdev_alloc(spa_t *spa, vdev_t **vdp, nvlist_t *nv, vdev_t *parent, uint_t id,
 	vd->vdev_tsd = tsd;
 	vd->vdev_islog = islog;
 
-    vd->vdev_stat.vs_active_io = 0;
-
 	if (top_level && alloc_bias != VDEV_BIAS_NONE)
 		vd->vdev_alloc_bias = alloc_bias;
 
