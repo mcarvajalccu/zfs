@@ -5566,8 +5566,6 @@ print_iostat_default(vdev_stat_t *vs, iostat_cbdata_t *cb, double scale)
 	print_one_stat((uint64_t)(vs->vs_bytes[ZIO_TYPE_WRITE] * scale),
 	    format, column_width, cb->cb_scripted);
 	print_one_stat(vs->vs_active_io, format, column_width, cb->cb_scripted);
-
-	printf("DEBUG: active_io = %llu\n", (signed long long)vs->vs_active_io);
 }
 
 static const char *const class_name[] = {
