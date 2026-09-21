@@ -797,12 +797,12 @@ vbio_submit(vbio_t *vbio, abd_t *abd, uint64_t size, vdev_t *v)
 	 */
 
 	atomic_inc_64(&v->vdev_stat.vs_active_io);
-	zfs_dbgmsg("Increment: IO is now = %d\n", &v->vdev_stat.vs_active_io);
+	zfs_dbgmsg("Increment: IO is now = %llu\n", &v->vdev_stat.vs_active_io);
 
 	if (vbio->vbio_wait) {
 		vdev_submit_bio_wait(vbio->vbio_bio);
 		atomic_dec_64(&v->vdev_stat.vs_active_io);
-		zfs_dbgmsg("Decrement: IO is now = %d\n", &v->vdev_stat.vs_active_io);
+		zfs_dbgmsg("Decrement: IO is now = %llu\n", &v->vdev_stat.vs_active_io);
 
 	} else {
 		vbio->vbio_bio->bi_end_io = vbio_completion;
