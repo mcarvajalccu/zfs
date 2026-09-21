@@ -1168,6 +1168,7 @@ vdev_disk_io_trim(zio_t *zio)
 static void
 vdev_disk_io_start(zio_t *zio)
 {
+	zfs_dbgmsg("HELLO FROM DISK IO START");
 	vdev_t *v = zio->io_vd;
 	vdev_disk_t *vd = v->vdev_tsd;
 	int error;
