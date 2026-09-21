@@ -4839,6 +4839,7 @@ zio_vdev_io_start(zio_t *zio)
 		}
 	}
 
+	zfs_dbgmsg("ZIO VDEV IO START CALLED");
 	vd->vdev_ops->vdev_op_io_start(zio);
 	return (NULL);
 }
