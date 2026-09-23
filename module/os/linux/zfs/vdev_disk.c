@@ -798,10 +798,15 @@ vbio_submit(vbio_t *vbio, abd_t *abd, uint64_t size, vdev_t *v)
 	 */
 
 	atomic_inc_64(&v->vdev_stat.vs_active_io);
+	zfs_dbgmsg("vbio_submit() increment: vs_active_io=%llu", (u_longlong_t)v->vdev_stat.vs_active_io);
+
+	
 
 	if (vbio->vbio_wait) {
 		vdev_submit_bio_wait(vbio->vbio_bio);
 		atomic_dec_64(&v->vdev_stat.vs_active_io);
+		zfs_dbgmsg("vbio_submit() decrement: vs_active_io=%llu", (u_longlong_t)v->vdev_stat.vs_active_io);
+
 
 	} else {
 		vbio->vbio_bio->bi_end_io = vbio_completion;
