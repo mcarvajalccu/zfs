@@ -905,7 +905,7 @@ vdev_should_queue_io(zio_t *zio)
 zio_t *
 vdev_queue_io(zio_t *zio)
 {
-	cmn_err(CE_WARN, "VDEV QUEUE IO CALLED");
+	printk(KERN_ERR "VDEV QUEUE IO CALLED\n");
 
 	vdev_queue_t *vq = &zio->io_vd->vdev_queue;
 	zio_t *dio, *nio;
