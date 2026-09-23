@@ -1168,7 +1168,7 @@ vdev_disk_io_trim(zio_t *zio)
 static void
 vdev_disk_io_start(zio_t *zio)
 {
-	zfs_dbgmsg("VDEV DISK IO START");
+	cmn_err(CE_WARN, "VDEV DISK IO START CALLED");
 	vdev_t *v = zio->io_vd;
 	vdev_disk_t *vd = v->vdev_tsd;
 	int error;

@@ -4662,6 +4662,7 @@ zio_alloc_zil(spa_t *spa, objset_t *os, uint64_t txg, blkptr_t *new_bp,
 static zio_t *
 zio_vdev_io_start(zio_t *zio)
 {
+	cmn_err(CE_WARN, "ZIO VDEV IO START CALLED");
 	vdev_t *vd = zio->io_vd;
 	uint64_t align;
 	spa_t *spa = zio->io_spa;
@@ -4839,7 +4840,6 @@ zio_vdev_io_start(zio_t *zio)
 		}
 	}
 
-	zfs_dbgmsg("ZIO VDEV IO START CALLED");
 	vd->vdev_ops->vdev_op_io_start(zio);
 	return (NULL);
 }
