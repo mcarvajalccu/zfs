@@ -905,6 +905,8 @@ vdev_should_queue_io(zio_t *zio)
 zio_t *
 vdev_queue_io(zio_t *zio)
 {
+	zfs_dbgmsg("VDEV QUEUE IO START");
+
 	vdev_queue_t *vq = &zio->io_vd->vdev_queue;
 	zio_t *dio, *nio;
 	zio_link_t *zl = NULL;
