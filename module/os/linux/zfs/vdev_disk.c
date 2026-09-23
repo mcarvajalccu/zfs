@@ -851,6 +851,8 @@ vbio_completion(struct bio *bio)
 		zio_delay_interrupt(zio);
 
     atomic_dec_64(&zio->io_vd->vdev_stat.vs_active_io);
+	zfs_dbgmsg("vbio_submit() decrement async: vs_active_io=%llu", (u_longlong_t)v->vdev_stat.vs_active_io);
+
 }
 
 /*
