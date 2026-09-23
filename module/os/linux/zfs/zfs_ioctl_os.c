@@ -330,6 +330,7 @@ extern void zcommon_fini(void);
 static int __init
 openzfs_init(void)
 {
+	cmn_err(CE_WARN, "MODULE LOADED - TEST PRINT");
 	int err;
 	if ((err = zcommon_init()) != 0)
 		goto zcommon_failed;
