@@ -905,7 +905,7 @@ vdev_should_queue_io(zio_t *zio)
 zio_t *
 vdev_queue_io(zio_t *zio)
 {
-	printk(KERN_ERR "VDEV QUEUE IO CALLED\n");
+	zfs_dbgmsg("VDEV QUEUE IO CALLED");
 
 	vdev_queue_t *vq = &zio->io_vd->vdev_queue;
 	zio_t *dio, *nio;

@@ -4662,7 +4662,7 @@ zio_alloc_zil(spa_t *spa, objset_t *os, uint64_t txg, blkptr_t *new_bp,
 static zio_t *
 zio_vdev_io_start(zio_t *zio)
 {
-	printk(KERN_ERR "ZIO VDEV IO START CALLED\n");
+	zfs_dbgmsg("ZIO VDEV IO START CALLED");
 	vdev_t *vd = zio->io_vd;
 	uint64_t align;
 	spa_t *spa = zio->io_spa;
