@@ -136,6 +136,7 @@ struct vdev_queue {
 	uint32_t	vq_cqueued;	/* Classes with queued I/Os. */
 	uint32_t	vq_cactive[ZIO_PRIORITY_NUM_QUEUEABLE];
 	uint32_t	vq_active;	/* Number of active I/Os. */
+	uint32_t    vq_bypass_active; /* Number of active I/Os that bypassed the queue. */
 	uint32_t	vq_ia_active;	/* Active interactive I/Os. */
 	uint32_t	vq_nia_credit;	/* Non-interactive I/Os credit. */
 	list_t		vq_active_list;	/* List of active I/Os. */
