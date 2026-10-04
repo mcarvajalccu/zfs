@@ -775,7 +775,6 @@ vbio_fill_cb(struct page *page, size_t off, size_t len, void *priv)
 static void
 vbio_submit(vbio_t *vbio, abd_t *abd, uint64_t size)
 {
-	zfs_dbgmsg("VBIO SUBMIT CALLED");
 	/*
 	 * We plug so we can submit the BIOs as we go and only unplug them when
 	 * they are fully created and submitted. This is important; if we don't
