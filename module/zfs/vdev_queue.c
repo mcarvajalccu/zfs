@@ -549,6 +549,7 @@ vdev_queue_pending_remove(vdev_queue_t *vq, zio_t *zio)
 	ASSERT3U(zio->io_priority, <, ZIO_PRIORITY_NUM_QUEUEABLE);
 	vq->vq_cactive[zio->io_priority]--;
 	vq->vq_active--;
+	vq->vq_vdev->vdev_stat.vs_active_io = vq->vq_active + vq->vq_bypass_active;
 	if (vdev_queue_is_interactive(zio->io_priority)) {
 		if (--vq->vq_ia_active == 0)
 			vq->vq_nia_credit = 0;

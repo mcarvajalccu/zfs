@@ -773,7 +773,7 @@ vbio_fill_cb(struct page *page, size_t off, size_t len, void *priv)
 
 /* Create some BIOs, fill them with data and submit them */
 static void
-vbio_submit(vbio_t *vbio, abd_t *abd, uint64_t size, vdev_t *v)
+vbio_submit(vbio_t *vbio, abd_t *abd, uint64_t size)
 {
 	zfs_dbgmsg("VBIO SUBMIT CALLED");
 	/*
