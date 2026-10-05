@@ -4893,6 +4893,8 @@ vdev_get_child_stat(vdev_t *cvd, vdev_stat_t *vs, vdev_stat_t *cvs)
 		vs->vs_bytes[t] += cvs->vs_bytes[t];
 	}
 
+	vs->vs_active_io += cvs->vs_active_io;
+
 	cvs->vs_scan_removing = cvd->vdev_removing;
 }
 
@@ -4992,13 +4994,6 @@ vdev_get_stats_ex_impl(vdev_t *vd, vdev_stat_t *vs, vdev_stat_ex_t *vsx)
 			return;
 
 		memcpy(vsx, &vd->vdev_stat_ex, sizeof (vd->vdev_stat_ex));
-		if (vd->vdev_ops->vdev_op_leaf) {
-			zfs_dbgmsg("LEAFREAD guid=%llu stat=%llu active=%u bypass=%u",
-				(u_longlong_t)vd->vdev_guid,
-				(u_longlong_t)vd->vdev_stat.vs_active_io,
-				vd->vdev_queue.vq_active,
-				vd->vdev_queue.vq_bypass_active);
-		}
 
 		for (t = 0; t < ZIO_PRIORITY_NUM_QUEUEABLE; t++) {
 			vsx->vsx_active_queue[t] = vd->vdev_queue.vq_cactive[t];
