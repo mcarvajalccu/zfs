@@ -950,6 +950,7 @@ vdev_queue_io(zio_t *zio)
 		zio->io_queue_state = ZIO_QS_NONE;
 		zio->io_flags |= ZIO_FLAG_BYPASSED_QUEUE;
 		atomic_inc_32(&vq->vq_bypass_active);
+		vq->vq_vdev->vdev_stat.vs_active_io = vq->vq_active + vq->vq_bypass_active;
 		return (zio);
 	}
 
