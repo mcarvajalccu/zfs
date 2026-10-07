@@ -524,6 +524,12 @@ vdev_queue_is_interactive(zio_priority_t p)
 	}
 }
 
+static inline void
+vdev_queue_update_active_stat(vdev_queue_t *vq)
+{
+	vq->vq_vdev->vdev_stat.vs_active_io = vq->vq_active + vq->vq_bypass_active;
+}
+
 static void
 vdev_queue_pending_add(vdev_queue_t *vq, zio_t *zio)
 {
@@ -531,7 +537,7 @@ vdev_queue_pending_add(vdev_queue_t *vq, zio_t *zio)
 	ASSERT3U(zio->io_priority, <, ZIO_PRIORITY_NUM_QUEUEABLE);
 	vq->vq_cactive[zio->io_priority]++;
 	vq->vq_active++;
-	vq->vq_vdev->vdev_stat.vs_active_io = vq->vq_active + vq->vq_bypass_active;
+	vdev_queue_update_active_stat(vq);
 	if (vdev_queue_is_interactive(zio->io_priority)) {
 		if (++vq->vq_ia_active == 1)
 			vq->vq_nia_credit = 1;
@@ -549,7 +555,7 @@ vdev_queue_pending_remove(vdev_queue_t *vq, zio_t *zio)
 	ASSERT3U(zio->io_priority, <, ZIO_PRIORITY_NUM_QUEUEABLE);
 	vq->vq_cactive[zio->io_priority]--;
 	vq->vq_active--;
-	vq->vq_vdev->vdev_stat.vs_active_io = vq->vq_active + vq->vq_bypass_active;
+	vdev_queue_update_active_stat(vq);
 	if (vdev_queue_is_interactive(zio->io_priority)) {
 		if (--vq->vq_ia_active == 0)
 			vq->vq_nia_credit = 0;
@@ -950,7 +956,7 @@ vdev_queue_io(zio_t *zio)
 		zio->io_queue_state = ZIO_QS_NONE;
 		zio->io_flags |= ZIO_FLAG_BYPASSED_QUEUE;
 		atomic_inc_32(&vq->vq_bypass_active);
-		vq->vq_vdev->vdev_stat.vs_active_io = vq->vq_active + vq->vq_bypass_active;
+		vdev_queue_update_active_stat(vq);
 		return (zio);
 	}
 
@@ -990,7 +996,7 @@ vdev_queue_io_done(zio_t *zio)
 	{
 		if (zio->io_flags & ZIO_FLAG_BYPASSED_QUEUE) {
 			atomic_dec_32(&vq->vq_bypass_active);
-			vq->vq_vdev->vdev_stat.vs_active_io = vq->vq_active + vq->vq_bypass_active;
+			vdev_queue_update_active_stat(vq);
 		}
 
 		return;

@@ -4765,7 +4765,7 @@ typedef struct name_and_columns {
 
 static const name_and_columns_t iostat_top_labels[][IOSTAT_MAX_LABELS] =
 {
-	[IOS_DEFAULT] = {{"capacity", 2}, {"operations", 2}, {"bandwidth", 2},
+	[IOS_DEFAULT] = {{"capacity", 2}, {"operations", 2}, {"bandwidth", 2}, {"active", 1},
 	    {NULL}},
 	[IOS_LATENCY] = {{"total_wait", 2}, {"disk_wait", 2}, {"syncq_wait", 2},
 	    {"asyncq_wait", 2}, {"scrub", 1}, {"trim", 1}, {"rebuild", 1},
@@ -4784,7 +4784,7 @@ static const name_and_columns_t iostat_top_labels[][IOSTAT_MAX_LABELS] =
 static const name_and_columns_t iostat_bottom_labels[][IOSTAT_MAX_LABELS] =
 {
 	[IOS_DEFAULT] = {{"alloc"}, {"free"}, {"read"}, {"write"}, {"read"},
-	    {"write"}, {NULL}},
+	    {"write"}, {"io"}, {NULL}},
 	[IOS_LATENCY] = {{"read"}, {"write"}, {"read"}, {"write"}, {"read"},
 	    {"write"}, {"read"}, {"write"}, {"wait"}, {"wait"}, {"wait"},
 	    {NULL}},
